@@ -1,6 +1,8 @@
 
 # Data of “Contributions of anthropogenic warming and urbanization to intensification of heatwaves over China”
 
+[![DOI](https://zenodo.org/badge/224094881.svg)](https://zenodo.org/badge/latestdoi/224094881)
+
 ## Figure1
 
 `Figure1_data_(observed and modelled HW variation in 1961-2012).rda`
@@ -214,3 +216,10 @@ temp <- foreach(varname = d_param$varname, indice = d_param$indice,  i = icount(
                    sp.layout = sp_arc_CH.south) # NULL, sp_arc_CH.south
 }
 ```
+
+## References
+
+Dongdong Kong. (2019, November 26). kongdd/ChinaHW\_data: Data of
+“Contributions of anthropogenic warming and urbanization to
+intensification of heatwaves over China” (Version v0.1). Zenodo.
+<http://doi.org/10.5281/zenodo.3553156>
