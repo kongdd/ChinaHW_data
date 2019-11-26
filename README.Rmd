@@ -1,0 +1,81 @@
+---
+output: github_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#",
+  fig.width = 10, fig.height = 5,
+  fig.align = "center",
+  fig.path  = "man/Figure/",
+  dev = 'svg'
+)
+```
+
+# Data of "Contributions of anthropogenic warming and urbanization to intensification of heatwaves over China"
+
+## Figure1
+`Figure1_data_(observed and modelled HW variation in 1961-2012).rda`
+
+* df_sm: modelled HW characteristics. A data.table with the columns of:
+`scenario`, `type_TRS`, `variable`, `year`, `type_region`, `value`, `probs`, `index`, `model`, `mov`.
+  - mov: 5 year moving average of HW characteristics
+
+* df_HW.obs: A data.table with the columns of:
+`type_data`, `type_region`, `probs`, `year`, `type_TRS`, `variable`, `index`, `value`, `mov`
+
+```{r}
+load("data_Figure1_(observed and modelled HW variation in 1961-2012).rda")
+df_sm
+df_HW.obs
+```
+
+## Figure2
+`data_Figure2_ECOF.rda`
+
+* d_coef: regression coefficients of finger print
+* d_cont: attributable change to each factor
+
+```{r}
+load("data_Figure2_ECOF.rda")
+d_cont
+d_coef
+```
+
+## Figure 3
+`data_Figure3_HW at different warming levels.rda`
+
+```{r}
+load("data_Figure3_HW at different warming levels.rda")
+df
+```
+
+## Figure 4
+`data_Figure4_PR_spatial.rda`
+
+```{r}
+load("data_Figure4_PR_spatial.rda")
+df
+str(poly_clip, 2)
+```
+
+How to visualize `df`?
+```{r eval=FALSE, include=TRUE}
+d_param <- expand.grid(varname = varnames, indice = unique(df$index))[1, ]
+temp <- foreach(varname = d_param$varname, indice = d_param$indice,  i = icount(1)) %do% {
+    d <- df[variable == varname & index == indice, .SD, .SDcols = as.character(Tinc)] %>% 
+        set_colnames(paste0("x", colnames(.)))
+    
+    scale_factor = ifelse(indice == "FAR", 100, 1)
+    unit         = ifelse(indice == "FAR", "%", "")
+    
+    poly_clip@data <- data.frame(d[info_clip$id, ])*scale_factor
+    p <- plot_FPAR(poly_clip, indice, varname, 
+                   stat = list(show = FALSE, name=as.character(indice), loc = c(104, 45)),
+                   unit = unit,
+                   unit.adj = 0.45,
+                   show = FALSE,
+                   sp.layout = sp_arc_CH.south) # NULL, sp_arc_CH.south
+}
+```
